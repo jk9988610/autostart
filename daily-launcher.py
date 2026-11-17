@@ -214,10 +214,10 @@ def run_gui(config):
     # ---------- 底部固定区（表单 + 按钮）----------
     bottom_bar = ttk.Frame(root)
     bottom_bar.pack(side="bottom", fill="x")
-
+
     mid.pack(side="top", fill="both", expand=True)
     # ---------- 表单 ----------
-    form = ttk.LabelFrame(bottom_bar, text="编辑项（选中行后改表单会实时保存；新增请先「清空」再填）", padding=8)
+    form = ttk.LabelFrame(bottom_bar, text="编辑项（选中行编辑实时保存；点「添加」新建空白项）", padding=8)
     form.pack(fill="x", padx=8, pady=(8, 4))
 
     type_var = tk.StringVar(value="folder")
@@ -369,17 +369,14 @@ def run_gui(config):
         return item
 
     def add_new():
-        if state["sel_index"] is not None:
-            messagebox.showinfo("提示", "当前选中项已自动同步。\n要新增请先点「清空」取消选中。")
-            return
-        if not path_var.get().strip():
-            messagebox.showwarning("提示", "路径不能为空")
-            return
-        state["items"].append(form_to_item())
+        # 新建一条空白记录并选中，用户可在表单里填写，实时保存
+        state["items"].append({"type": "folder", "name": "", "path": ""})
         refresh_tree()
-        clear_form()
+        idx = len(state["items"]) - 1
+        tree.selection_set(str(idx))
+        tree.see(str(idx))
+        on_tree_select()
         _persist()
-
     def delete_selected():
         sel = tree.selection()
         if not sel:
@@ -439,13 +436,17 @@ def run_gui(config):
         save_ui_state(_s)
 
     def _on_close():
+        if state["profile"] is not None:
+            state["items"] = [it for it in state["items"]
+                              if (it.get("path") or "").strip() or (it.get("name") or "").strip()]
+            profiles[state["profile"]]["items"] = [dict(x) for x in state["items"]]
+            save_config(config)
         _save_window_state()
         root.destroy()
 
     root.protocol("WM_DELETE_WINDOW", _on_close)
 
     ttk.Button(btns, text="添加",   command=add_new).pack(side="left")
-    ttk.Button(btns, text="清空",   command=clear_form).pack(side="left", padx=4)
     ttk.Button(btns, text="删除选中", command=delete_selected).pack(side="left", padx=4)
     ttk.Button(btns, text="上移",   command=lambda: move(-1)).pack(side="left")
     ttk.Button(btns, text="下移",   command=lambda: move(1)).pack(side="left", padx=4)

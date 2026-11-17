@@ -1,7 +1,8 @@
 {
   "openers": {
     "edge": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-    "code": "C:\\Users\\123mc\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+    "code": "C:\\Users\\123mc\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "wps": "C:/Users/123mc/AppData/Local/Kingsoft/WPS Office/12.1.0.29690/office6/wps.exe"
   },
   "profiles": {
     "work": {
@@ -10,14 +11,14 @@
         {
           "type": "folder",
           "name": "SE71M 软件目录",
-          "path": "E:\\M_2026\\524_LJ-V08\\software\\trunk\\SE71M_0524_LJ-V08_V1_20261103",
+          "path": "E:/M_2026/525_E606/software/trunk/SE71M_0525_E606_V1_20261106",
           "opener": "code"
         },
         {
           "type": "file",
           "name": "设计文档",
-          "path": "E:\\M_2026\\524_LJ-V08\\description\\BYKC_LJ_V08_OM6238_V0 sch.pdf",
-          "opener": "edge"
+          "path": "E:/M_2026/525_E606/description/BYKC_E606_OM6239_V0 sch.pdf",
+          "opener": "wps"
         },
         {
           "type": "folder",
@@ -26,9 +27,14 @@
         },
         {
           "type": "url",
-          "name": "内部",
-          "path": "http://your-intranet/",
+          "name": "deepseek",
+          "path": "https://chat.deepseek.com/",
           "opener": "edge"
+        },
+        {
+          "type": "folder",
+          "name": "tools文件夹",
+          "path": "E:/tools"
         }
       ]
     },
