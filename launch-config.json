@@ -10,26 +10,8 @@
       "items": [
         {
           "type": "folder",
-          "name": "SE71M 软件目录",
-          "path": "E:/M_2026/525_E606/software/trunk/SE71M_0525_E606_V1_20261106",
-          "opener": "code"
-        },
-        {
-          "type": "file",
-          "name": "设计文档",
-          "path": "E:/M_2026/525_E606/description/BYKC_E606_OM6239_V0 sch.pdf",
-          "opener": "wps"
-        },
-        {
-          "type": "folder",
           "name": "工作目录",
           "path": "E:/M_2026"
-        },
-        {
-          "type": "url",
-          "name": "deepseek",
-          "path": "https://chat.deepseek.com/",
-          "opener": "edge"
         },
         {
           "type": "folder",

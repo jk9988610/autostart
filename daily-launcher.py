@@ -103,17 +103,49 @@ def launch_item(item, config):
 
 
 def show_popup(title, lines):
+    """显示启动报告。返回 "config" 表示用户点了「打开配置面板」，否则返回 None。"""
     if sys.platform != "win32":
-        return
+        return None
+    result = {"action": None}
     try:
         import tkinter as tk
-        from tkinter import messagebox
+        from tkinter import ttk
         root = tk.Tk()
-        root.withdraw()
-        messagebox.showinfo(title, "\n".join(lines))
-        root.destroy()
+        root.title(title)
+        root.attributes("-topmost", True)
+        root.resizable(False, False)
+
+        frm = ttk.Frame(root, padding=14)
+        frm.pack(fill="both", expand=True)
+        lbl = tk.Label(frm, text="\n".join(lines), justify="left",
+                       font=("Microsoft YaHei UI", 10))
+        lbl.pack()
+
+        btns = ttk.Frame(frm)
+        btns.pack(fill="x", pady=(12, 0))
+
+        def _close():
+            result["action"] = None
+            root.destroy()
+
+        def _open_config():
+            result["action"] = "config"
+            root.destroy()
+
+        ttk.Button(btns, text="打开配置面板", command=_open_config).pack(side="left")
+        ttk.Button(btns, text="确定", command=_close).pack(side="right")
+
+        root.update_idletasks()
+        w = max(430, min(lbl.winfo_reqwidth() + 48, 680))
+        h = lbl.winfo_reqheight() + 96
+        center_window(root, w, h)
+        root.lift()
+        root.focus_force()
+        root.mainloop()
+        return result["action"]
     except Exception as e:
         log(f"弹窗失败: {e}", also_print=False)
+        return None
 
 
 def run_gui(config):
@@ -516,7 +548,8 @@ def main():
     if not args.no_popup:
         lines = [f"{'✅' if ok else '❌'} {name}" for name, ok in results]
         lines += ["", summary, f"日志: {LOG_FILE}"]
-        show_popup(f"启动器 - {profile.get('name', args.profile)}", lines)
+        if show_popup(f"启动器 - {profile.get('name', args.profile)}", lines) == "config":
+            run_gui(config)
 
 
 if __name__ == "__main__":
